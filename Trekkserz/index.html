@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>My Website</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            width: 100vw;
+            height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        img {
+            width: 100%;
+        }
+
+        .navbar-wrapper {
+            position: absolute;
+            width: 80%;
+            top: 14.8%;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid white;
+        }
+        
+        .logo {
+            width: 50px;
+        }
+
+        .nav-links-wrapper {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links-wrapper a {
+            color: white;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <img src="./Picsart_23-06-14_16-44-35-935.png" alt="">
+    <div class="navbar-wrapper">
+        <div class="logo">
+            <a href="#"><img src="./logo.jpg" alt="Logo"></a>
+        </div>
+        <div class="nav-links-wrapper">
+            <a href="#" class="nav-link">Discover</a>
+            <a href="#" class="nav-link">Community</a>
+            <a href="#" class="nav-link">Special Deals</a>
+            <a href="#" class="nav-link">About Us</a>
+            <a href="#" class="cta-button">Sign In</a>
+            <a href="#" class="cta-button">Register</a>
+        </div>
+    </div>
+</body>
+
+</html>
