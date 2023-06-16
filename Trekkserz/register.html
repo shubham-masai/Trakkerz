@@ -119,6 +119,7 @@
 
 <script>
     let userData = JSON.parse(localStorage.getItem("username")) || [];
+    let name_key = JSON.parse(localStorage.getItem("isActive"))||"";
     let registrationForm = document.getElementById('registration-form');
 
     registrationForm.addEventListener('submit', (event) => {
@@ -161,8 +162,8 @@
                 userData.push(obj);
                 localStorage.setItem("username", JSON.stringify(userData));
                 alert('Registration successful!');
-
-                window.location.href = "index.html";
+               localStorage.setItem("isActive",JSON.stringify(obj.name));
+                window.location.href = "./index.html";
             }
         }
     });

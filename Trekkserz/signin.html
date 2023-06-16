@@ -83,7 +83,9 @@
 <script>
     let userData = JSON.parse(localStorage.getItem("username")) || [];
     let loginForm = document.getElementById('login-form');
+    let active_user = document.getElementById("login-button");
 
+    
     loginForm.addEventListener('submit', (event) => {
         event.preventDefault();
 
@@ -94,6 +96,7 @@
             if (userData[i].name === username) {
                 if (userData[i].password === password) {
                     alert("login Successfully");
+               localStorage.setItem("isActive",JSON.stringify(userData[i].name));
                     window.location.href = "./index.html";
                 }
             } else {
