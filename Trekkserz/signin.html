@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            background-color: #f1f1f1;
+            font-family: Arial, sans-serif;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-top: 50px;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 40px 30px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            max-width: 300px;
+            margin: 0 auto;
+            margin-top: 30px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #3e8e41;
+        }
+
+        @media only screen and (max-width: 600px) {
+            form {
+                max-width: 90%;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Sign In</h1>
+    <form id="login-form">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+        <input type="submit" value="Sign In">
+    </form>
+</body>
+
+</html>
+
+<script>
+    let userData = JSON.parse(localStorage.getItem("username")) || [];
+    let loginForm = document.getElementById('login-form');
+
+    loginForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+
+        let username = event.target.elements.username.value;
+        let password = event.target.elements.password.value;
+
+        for (let i = 0; i < userData.length; i++) {
+            if (userData[i].name === username) {
+                if (userData[i].password === password) {
+                    alert("login Successfully");
+                    window.location.href = "./index.html";
+                }
+            } else {
+                alert("please check your username and password");
+            }
+        }
+    });
+</script>
+
+
+ 
