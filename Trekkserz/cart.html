@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Order Page</title>
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f2f2f2;
+        }
+
+        h1 {
+            font-size: 24px;
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        #total {
+            margin-top: 50px;
+            text-align: center;
+            font-size: 20px;
+        }
+
+        #order-total {
+            font-weight: bold;
+        }
+
+        #cupon {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 30px;
+            padding: 20px;
+        }
+
+        #cupon input[type="text"] {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            margin-right: 20px;
+        }
+
+        #cupon button {
+            padding: 10px;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        #cupon button:hover {
+            background-color: #3e8e41;
+        }
+
+        #order-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        #order-container div {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 250px;
+            margin: 10px;
+            padding: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+        }
+
+        #order-container img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+
+        #order-container h2 {
+            margin-top: 10px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        #order-container p {
+            margin-top: 5px;
+            font-size: 16px;
+        }
+
+       button {
+        margin-right: 10px;
+        background-color: rgb(76,175,80);
+        border-radius: 5px;
+        color: white;
+        padding: 5px 10px;
+        border: none;
+       }
+       button:hover{
+        background-color: #3e8e41;
+       }
+ 
+
+       
+      
+    </style>
+</head>
+
+<body>
+    <h1 id="total">
+        Your total order value is :- <span id="order-total">0</span>
+    </h1>
+
+    <div id="cupon">
+        <input type="text" />
+        <button>Add Cupon</button>
+    </div>
+
+    <div id="order-container">
+    </div>
+</body>
+<script>
+    const orderContainer = document.getElementById("order-container");
+    const orderTotal = document.getElementById("order-total");
+    const cuponInput = document.getElementById("cupon");
+    const cuponBtn = document.querySelector("#cupon button");
+
+
+    let buyData = JSON.parse(localStorage.getItem("cart")) || [];
+
+    function Display(data) {
+
+        orderContainer.innerHTML = "";
+        let totalPrice = 0;
+
+        for (let i = 0; i < data.length; i++) {
+
+            let container = document.createElement("div");
+            let image = document.createElement("img");
+            image.setAttribute("src", data[i].image);
+
+            let place = document.createElement("h2");
+            place.innerText = data[i].place;
+
+            let rating = document.createElement("p");
+            rating.innerText = `Rating: ${data[i].rating}`;
+            let price = document.createElement('p');
+            price.textContent = `Price: $${data[i].price} Per Adult`;
+
+
+            let minusBtn = document.createElement("button");
+            minusBtn.innerText = "-";
+            minusBtn.addEventListener("click", function () {
+                if (data[i].quantity > 1) {
+                    data[i].quantity--;
+                    quantity.innerText = data[i].quantity;
+                    updateTotal();
+                }
+            });
+
+            let quantity = document.createElement("button");
+            quantity.innerText = data[i].quantity;
+
+            let plusBtn = document.createElement("button");
+            plusBtn.innerText = "+";
+            plusBtn.addEventListener("click", function () {
+                data[i].quantity++;
+                quantity.innerText = data[i].quantity;
+                updateTotal();
+            });
+
+            let cancelBtn = document.createElement("button");
+            cancelBtn.innerText = "Cancel";
+            cancelBtn.addEventListener("click", function () {
+                data.splice(i, 1);
+                Display(data);
+                updateTotal();
+                localStorage.setItem("cart", JSON.stringify(data));
+            });
+
+
+            container.appendChild(image);
+            container.appendChild(place);
+            container.appendChild(rating);
+            container.appendChild(price);
+            container.appendChild(plusBtn);
+            container.appendChild(quantity);
+            container.appendChild(minusBtn);
+            container.appendChild(cancelBtn);
+
+            orderContainer.appendChild(container);
+
+            totalPrice += data[i].quantity * data[i].price;
+        }
+        orderTotal.innerText = `Total Order Price: $${totalPrice}`;
+    }
+    Display(buyData);
+
+
+    function updateTotal() {
+        let totalPrice = 0;
+        for (let i = 0; i < buyData.length; i++) {
+            totalPrice += buyData[i].quantity * buyData[i].price;
+        }
+        orderTotal.innerText = `Total Order Price: $${totalPrice}`;
+    }
+
+    function applyCoupon() {
+        let couponCode = cuponInput.children[0].value;
+        if (couponCode === "Masai30") {
+            let totalPrice = 0;
+            for (let i = 0; i < buyData.length; i++) {
+                totalPrice += buyData[i].quantity * buyData[i].price;
+            }
+            let discount = Math.floor((totalPrice * 30) / 100);
+            let discountedPrice = totalPrice - discount;
+            orderTotal.innerText = `Total Order Price: $${discountedPrice}`;
+        } else {
+            alert("Invalid coupon code. Please try again.");
+        }
+    }
+    cuponBtn.addEventListener("click", applyCoupon);
+</script>
+
+</html>

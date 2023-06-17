@@ -24,6 +24,24 @@
             color: #333;
         }
 
+
+        #cartDiv {
+            text-align: center;
+            margin: 1rem;
+        }
+
+        #cart {
+            background-color: #4CAF50;
+            color: white;
+            padding: 0.5rem 1rem;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        #cart:hover {
+            background-color: #3e8e41;
+        }
+
         .container {
             width: 90%;
             margin: 0 auto;
@@ -97,6 +115,7 @@
             color: #333;
         }
 
+
         @media (max-width: 1000px) {
             .container {
                 grid-template-columns: repeat(3, 1fr);
@@ -126,12 +145,17 @@
         <option value="High">High to Low</option>
         <option value="Low">Low to high</option>
     </select>
+    <div id="cartDiv">
+        <a href="./cart.html" id="cart">Cart Items</a>
+    </div>
     <div class="container"></div>
 </body>
 
 </html>
 <script>
     const container = document.querySelector('.container');
+
+
 
     const arr = [
         {
@@ -269,16 +293,16 @@
             let cart = document.createElement("button");
             cart.innerText = "Add to Cart";
             cart.addEventListener("click", function () {
+                data[i].quantity = 1;
                 cartData.push(data[i]);
                 localStorage.setItem("cart", JSON.stringify(cartData));
-              
+
             });
 
             div.append(image, place, rating, price, cart);
             container.append(div);
         }
     }
-
     let filter = document.getElementById("filter");
     filter.addEventListener("change", () => {
         if (filter.value == "High") {
@@ -297,6 +321,5 @@
         const filteredData = arr.filter(item => item.place.toLowerCase().includes(searchTerm));
         displayData(filteredData);
     });
-
     displayData(arr);
 </script>
