@@ -81,30 +81,33 @@
 </html>
 
 <script>
-    let userData = JSON.parse(localStorage.getItem("username")) || [];
+   
+   let userData = JSON.parse(localStorage.getItem("username")) || [];
     let loginForm = document.getElementById('login-form');
-    let active_user = document.getElementById("login-button");
 
-    
+
     loginForm.addEventListener('submit', (event) => {
         event.preventDefault();
 
         let username = event.target.elements.username.value;
         let password = event.target.elements.password.value;
 
+        let isUserFound = false;
         for (let i = 0; i < userData.length; i++) {
             if (userData[i].name === username) {
                 if (userData[i].password === password) {
                     alert("login Successfully");
-               localStorage.setItem("isActive",JSON.stringify(userData[i].name));
+                    localStorage.setItem("isActive", JSON.stringify(userData[i].name));
+                    isUserFound = true;
                     window.location.href = "./index.html";
+                    break;
                 }
-            } else {
-                alert("please check your username and password");
             }
         }
+
+        if (!isUserFound) {
+            alert("please check your username and password");
+        }
     });
+
 </script>
-
-
- 

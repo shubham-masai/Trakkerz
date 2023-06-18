@@ -155,8 +155,6 @@
 <script>
     const container = document.querySelector('.container');
 
-
-
     const arr = [
         {
             image: "https://media-cdn.tripadvisor.com/media/attractions-splice-spp-720x480/06/8d/52/be.jpg",
@@ -273,8 +271,10 @@
             rating: "5 star",
             price: "54000"
         }
-    ]
-    let cartData = JSON.parse(localStorage.getItem("cart")) || [];
+    ];
+   
+    let name_key = JSON.parse(localStorage.getItem("isActive")) || null;
+    let cartData = JSON.parse(localStorage.getItem(name_key)) || [];
     function displayData(data) {
         container.innerHTML = "";
         for (let i = 0; i < data.length; i++) {
@@ -293,9 +293,16 @@
             let cart = document.createElement("button");
             cart.innerText = "Add to Cart";
             cart.addEventListener("click", function () {
-                data[i].quantity = 1;
-                cartData.push(data[i]);
-                localStorage.setItem("cart", JSON.stringify(cartData));
+
+                if (name_key == null) {
+                    alert("please login to your account or register your slef");
+                    window.location.href = "./index.html";
+                }
+                else {
+                    data[i].quantity = 1;
+                    cartData.push(data[i]);
+                    localStorage.setItem(name_key, JSON.stringify(cartData));
+                }
 
             });
 
@@ -314,7 +321,6 @@
             displayData(arr);
         }
     })
-
     let searchbar = document.getElementById('searchbar');
     searchbar.addEventListener('input', () => {
         const searchTerm = searchbar.value.toLowerCase();

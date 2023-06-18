@@ -70,7 +70,7 @@
             border-radius: 5px;
             width: 250px;
             margin: 10px;
-            padding: 10px;
+            padding: 15px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
         }
 
@@ -92,29 +92,31 @@
             font-size: 16px;
         }
 
-       button {
-        margin-right: 10px;
-        background-color: rgb(76,175,80);
-        border-radius: 5px;
-        color: white;
-        padding: 5px 10px;
-        border: none;
-       }
-       button:hover{
-        background-color: #3e8e41;
-       }
- 
+        button {
+            margin-right: 10px;
+            background-color: rgb(76, 175, 80);
+            border-radius: 5px;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+        }
 
-       
-      
+        button:hover {
+            background-color: #3e8e41;
+        }
     </style>
 </head>
 
 <body>
+
+    <div id="welcomeContainer">
+        <h1>Welcome to Trakkerz!</h1>
+    </div>
+    
+    
     <h1 id="total">
         Your total order value is :- <span id="order-total">0</span>
     </h1>
-
     <div id="cupon">
         <input type="text" />
         <button>Add Cupon</button>
@@ -124,106 +126,120 @@
     </div>
 </body>
 <script>
-    const orderContainer = document.getElementById("order-container");
-    const orderTotal = document.getElementById("order-total");
-    const cuponInput = document.getElementById("cupon");
-    const cuponBtn = document.querySelector("#cupon button");
+
+    let name_key = JSON.parse(localStorage.getItem("isActive")) || null;
+    if (name_key == null) {
+        alert("Please register your self or login to your account.");
+        window.location.href = "./index.html";
+    }
+    else {
+
+        let welcomeContainer = document.getElementById("welcomeContainer");
+
+        const orderContainer = document.getElementById("order-container");
+        const orderTotal = document.getElementById("order-total");
+        const cuponInput = document.getElementById("cupon");
+        const cuponBtn = document.querySelector("#cupon button");
 
 
-    let buyData = JSON.parse(localStorage.getItem("cart")) || [];
+        let welcome = document.createElement("h1");
+        welcome.innerText = `We're glad you're here, ${name_key}!`;
+        welcomeContainer.appendChild(welcome);
 
-    function Display(data) {
+        let buyData = JSON.parse(localStorage.getItem(name_key)) || [];
 
-        orderContainer.innerHTML = "";
-        let totalPrice = 0;
+        function Display(data) {
 
-        for (let i = 0; i < data.length; i++) {
+            orderContainer.innerHTML = "";
+            let totalPrice = 0;
 
-            let container = document.createElement("div");
-            let image = document.createElement("img");
-            image.setAttribute("src", data[i].image);
+            for (let i = 0; i < data.length; i++) {
 
-            let place = document.createElement("h2");
-            place.innerText = data[i].place;
+                let container = document.createElement("div");
+                let image = document.createElement("img");
+                image.setAttribute("src", data[i].image);
 
-            let rating = document.createElement("p");
-            rating.innerText = `Rating: ${data[i].rating}`;
-            let price = document.createElement('p');
-            price.textContent = `Price: $${data[i].price} Per Adult`;
+                let place = document.createElement("h2");
+                place.innerText = data[i].place;
+
+                let rating = document.createElement("p");
+                rating.innerText = `Rating: ${data[i].rating}`;
+                let price = document.createElement('p');
+                price.textContent = `Price: $${data[i].price} Per Adult`;
 
 
-            let minusBtn = document.createElement("button");
-            minusBtn.innerText = "-";
-            minusBtn.addEventListener("click", function () {
-                if (data[i].quantity > 1) {
-                    data[i].quantity--;
+                let minusBtn = document.createElement("button");
+                minusBtn.innerText = "-";
+                minusBtn.addEventListener("click", function () {
+                    if (data[i].quantity > 1) {
+                        data[i].quantity--;
+                        quantity.innerText = data[i].quantity;
+                        updateTotal();
+                    }
+                });
+
+                let quantity = document.createElement("button");
+                quantity.innerText = data[i].quantity;
+
+                let plusBtn = document.createElement("button");
+                plusBtn.innerText = "+";
+                plusBtn.addEventListener("click", function () {
+                    data[i].quantity++;
                     quantity.innerText = data[i].quantity;
                     updateTotal();
-                }
-            });
+                });
 
-            let quantity = document.createElement("button");
-            quantity.innerText = data[i].quantity;
+                let cancelBtn = document.createElement("button");
+                cancelBtn.innerText = "Cancel";
+                cancelBtn.addEventListener("click", function () {
+                    data.splice(i, 1);
+                    Display(data);
+                    updateTotal();
+                    localStorage.setItem(name_key, JSON.stringify(data));
+                });
 
-            let plusBtn = document.createElement("button");
-            plusBtn.innerText = "+";
-            plusBtn.addEventListener("click", function () {
-                data[i].quantity++;
-                quantity.innerText = data[i].quantity;
-                updateTotal();
-            });
+                container.appendChild(image);
+                container.appendChild(place);
+                container.appendChild(rating);
+                container.appendChild(price);
+                container.appendChild(plusBtn);
+                container.appendChild(quantity);
+                container.appendChild(minusBtn);
+                container.appendChild(cancelBtn);
 
-            let cancelBtn = document.createElement("button");
-            cancelBtn.innerText = "Cancel";
-            cancelBtn.addEventListener("click", function () {
-                data.splice(i, 1);
-                Display(data);
-                updateTotal();
-                localStorage.setItem("cart", JSON.stringify(data));
-            });
+                orderContainer.appendChild(container);
 
-
-            container.appendChild(image);
-            container.appendChild(place);
-            container.appendChild(rating);
-            container.appendChild(price);
-            container.appendChild(plusBtn);
-            container.appendChild(quantity);
-            container.appendChild(minusBtn);
-            container.appendChild(cancelBtn);
-
-            orderContainer.appendChild(container);
-
-            totalPrice += data[i].quantity * data[i].price;
+                totalPrice += data[i].quantity * data[i].price;
+            }
+            orderTotal.innerText = `Total Order Price: $${totalPrice}`;
         }
-        orderTotal.innerText = `Total Order Price: $${totalPrice}`;
-    }
-    Display(buyData);
+        Display(buyData);
 
-
-    function updateTotal() {
-        let totalPrice = 0;
-        for (let i = 0; i < buyData.length; i++) {
-            totalPrice += buyData[i].quantity * buyData[i].price;
-        }
-        orderTotal.innerText = `Total Order Price: $${totalPrice}`;
-    }
-
-    function applyCoupon() {
-        let couponCode = cuponInput.children[0].value;
-        if (couponCode === "Masai30") {
+        function updateTotal() {
             let totalPrice = 0;
             for (let i = 0; i < buyData.length; i++) {
                 totalPrice += buyData[i].quantity * buyData[i].price;
             }
-            let discount = Math.floor((totalPrice * 30) / 100);
-            let discountedPrice = totalPrice - discount;
-            orderTotal.innerText = `Total Order Price: $${discountedPrice}`;
-        } else {
-            alert("Invalid coupon code. Please try again.");
+            orderTotal.innerText = `Total Order Price: $${totalPrice}`;
         }
+
+        function applyCoupon() {
+            let couponCode = cuponInput.children[0].value;
+            if (couponCode === "Masai30") {
+                let totalPrice = 0;
+                for (let i = 0; i < buyData.length; i++) {
+                    totalPrice += buyData[i].quantity * buyData[i].price;
+                }
+                let discount = Math.floor((totalPrice * 30) / 100);
+                let discountedPrice = totalPrice - discount;
+                orderTotal.innerText = `Total Order Price: $${discountedPrice}`;
+            } else {
+                alert("Invalid coupon code. Please try again.");
+            }
+        }
+        cuponBtn.addEventListener("click", applyCoupon);
     }
-    cuponBtn.addEventListener("click", applyCoupon);
+
 </script>
 
 </html>
