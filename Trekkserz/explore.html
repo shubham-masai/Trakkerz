@@ -14,7 +14,7 @@
             margin: 0;
             padding: 0;
             font-family: sans-serif;
-            background-color: #f5f5f5;
+            background-color: #cfdcf3;
         }
 
         h1 {
@@ -40,6 +40,7 @@
 
         #cart:hover {
             background-color: #3e8e41;
+            font-weight: bold;
         }
 
         .container {
@@ -55,7 +56,7 @@
             background-color: #fff;
             padding: 20px;
             border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 1.5px 5px rgb(146, 85, 85);
         }
 
         .container img {
@@ -77,19 +78,22 @@
         }
 
         button {
-            background-color: #333;
+            /* background-color: #333; */
+            background-color: rgb(126, 97, 97);
             color: #fff;
             border: none;
             padding: 10px 20px;
             border-radius: 5px;
             cursor: pointer;
             transition: all 0.3s ease;
+            font-weight: bold;
         }
 
         button:hover {
-            background-color: #fff;
-            color: #333;
-            border: 1px solid #333;
+            background-color: rgb(121, 101, 101);
+            color: wheat;
+            border: 1px solid brown;
+            transform: scale(00.5rem);
         }
 
         #searchbar {
@@ -101,6 +105,7 @@
             width: 100%;
             max-width: 400px;
             font-size: 18px;
+            box-shadow: 0 1px 2px rgb(146, 85, 85);
         }
 
         #filter {
@@ -113,6 +118,17 @@
             max-width: 400px;
             font-size: 18px;
             color: #333;
+            box-shadow: 0 1px 2px rgb(146, 85, 85);
+        }
+
+        .success {
+            color: green !important;
+            font-size: 1.2rem !important;
+        }
+
+        .already {
+            color: red !important;
+            font-size: 1.2rem !important;
         }
 
 
@@ -272,7 +288,7 @@
             price: "54000"
         }
     ];
-   
+
     let name_key = JSON.parse(localStorage.getItem("isActive")) || null;
     let cartData = JSON.parse(localStorage.getItem(name_key)) || [];
     function displayData(data) {
@@ -290,6 +306,16 @@
             let price = document.createElement('p');
             price.textContent = `Price: $${data[i].price} Per Adult`;
 
+            let added = document.createElement("p");
+            added.innerText = "Item added to cart!";
+            added.classList.add("success");
+            added.style.display = "none";
+
+            let already = document.createElement("p");
+            already.innerText = "Item already in cart.";
+            already.classList.add("already");
+            already.style.display = "none";
+
             let cart = document.createElement("button");
             cart.innerText = "Add to Cart";
             cart.addEventListener("click", function () {
@@ -299,14 +325,32 @@
                     window.location.href = "./index.html";
                 }
                 else {
-                    data[i].quantity = 1;
-                    cartData.push(data[i]);
-                    localStorage.setItem(name_key, JSON.stringify(cartData));
-                }
+                    let isperesent = false;
+                    for (let j = 0; j < cartData.length; j++) {
+                        if (cartData[j].place == data[i].place) {
+                            isperesent = true;
 
+                            already.style.display = "block";
+                            setTimeout(function () {
+                                already.style.display = "none";
+                            }, 4000)
+                            break
+                        }
+                    }
+                    if (!isperesent) {
+                        data[i].quantity = 1;
+                        cartData.push(data[i]);
+                        added.style.display = "block";
+                        setTimeout(function () {
+                            added.style.display = "none";
+                        }, 3000)
+                        localStorage.setItem(name_key, JSON.stringify(cartData));
+                    }
+                }
             });
 
-            div.append(image, place, rating, price, cart);
+
+            div.append(image, place, rating, price, cart, added, already);
             container.append(div);
         }
     }
