@@ -69,7 +69,10 @@
             color: white;
             text-decoration: none;
         }
-
+        .nav-links-wrapper a:hover{
+            transform: scale(1.05);
+        font-weight: bold;
+        }
         .heading {
             position: absolute;
             width: 80%;
@@ -110,7 +113,8 @@
         }
 
         #explore a:hover {
-            background-color: rgb(250, 228, 189);
+            background-color: rgb(240, 205, 144);
+            border: 1px solid brown;
         }
 
         footer {
@@ -412,6 +416,7 @@
 
 
 </html>
+
 
 <script>
     let name_key = JSON.parse(localStorage.getItem("isActive")) ||null;

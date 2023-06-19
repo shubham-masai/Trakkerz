@@ -1,0 +1,107 @@
+ 
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OTP Tutorial in JS</title>
+
+    <script src="https://smtpjs.com/v3/smtp.js"></script>
+    <style>
+        body {
+            text-align: center;
+        }
+
+        .form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            align-items: center;
+            justify-content: center;
+            width: fit-content;
+            margin: auto;
+        }
+
+        input {
+            padding: 0.6rem;
+        }
+
+        .btn {
+            padding: 0.5rem 0.8rem;
+            background-color: violet;
+            outline: none;
+            border: none;
+            cursor: pointer;
+            border-radius: 16px;
+        }
+
+        .otpverify {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+
+    <h1>OTP Using JavaScript</h1>
+    <div class="form">
+        <div class="otpverify">
+            <input type="text" id="otp_inp" placeholder="Enter the OTP sent to your Email...">
+            <button class="btn" id="otp-btn">Verify</button>
+        </div>
+
+        <button onclick="sendOTP()" class="btn">Send OTP</button>
+    </div>
+
+    <script>
+        let emailKey = JSON.parse(localStorage.getItem("emailkey"));
+        let verify = false;
+        let userData = JSON.parse(localStorage.getItem("username")) || [];
+
+        function sendOTP() {
+            const otpverify = document.getElementsByClassName('otpverify')[0];
+            let otp_val = Math.floor(Math.random() * 10000);
+            let emailbody = `
+            <h1>Welcome to Trekkerz!  please verify your OTP</h1> <br>
+            <h2>Your OTP is </h2>${otp_val}`;
+            Email.send({
+                SecureToken: "3a0f5131-cd12-4011-98fc-17d850be133a",
+                To: emailKey,
+                From: "senas17941@byorby.com",
+                Subject: "Welcome to Trekkerz, OTP verification",
+                Body: emailbody
+            }).then(
+                message => {
+                    if (message === "OK") {
+                        alert("OTP sent to your email " + emailKey);
+                        otpverify.style.display = "block";
+                        const otp_inp = document.getElementById('otp_inp');
+                        const otp_btn = document.getElementById('otp-btn');
+                        otp_btn.addEventListener('click', () => {
+                            if (otp_inp.value == otp_val) {
+                                alert("Email address verified...");
+                                verify = true;
+                                let obj = {
+                                    name: name,
+                                    email: emailKey,
+                                    password: "password123"
+                                };
+                                userData.push(obj);
+                                localStorage.setItem("username", JSON.stringify(userData));
+                                window.location.href = "./index.html";
+                            }
+                            else {
+                                alert("Invalid OTP");
+                            }
+                        })
+                    }
+                }
+            );
+        }
+    </script>
+</body>
+
+</html>
