@@ -69,10 +69,12 @@
             color: white;
             text-decoration: none;
         }
-        .nav-links-wrapper a:hover{
+
+        .nav-links-wrapper a:hover {
             transform: scale(1.05);
-        font-weight: bold;
+            font-weight: bold;
         }
+
         .heading {
             position: absolute;
             width: 80%;
@@ -417,9 +419,9 @@
 
 </html>
 
-
+<!-- i have just try to add commit and hide it -->
 <script>
-    let name_key = JSON.parse(localStorage.getItem("isActive")) ||null;
+    let name_key = JSON.parse(localStorage.getItem("isActive")) || null;
     let register = document.getElementById("register-button");
 
     let active_user = document.getElementById("login-button");
@@ -442,15 +444,15 @@
 
     logout.addEventListener("click", function () {
         if (confirm("are you sure you want to logout")) {
-            localStorage.setItem("isActive",null);
-            user.style.display="none";
-            logout.style.display="none";
-            register.style.display="block";
-            active_user.style.display="block";
+            localStorage.setItem("isActive", null);
+            user.style.display = "none";
+            logout.style.display = "none";
+            register.style.display = "block";
+            active_user.style.display = "block";
             localStorage.removeItem("isActive");
             localStorage.removeItem("picture");
             user.style.display = "none";
-            
+
             window.location.reload();
         }
     });
@@ -499,7 +501,7 @@
         hidePicture();
     });
 
-    if(name_key != null){
+    if (name_key != null) {
         const savedPicture = localStorage.getItem("picture");
         if (savedPicture) {
             showPicture();
