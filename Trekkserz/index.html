@@ -15,7 +15,6 @@
             box-sizing: border-box;
         }
 
-
         body {
             width: 100vw;
             height: 100vh;
@@ -48,9 +47,17 @@
             width: 90px;
         }
 
+
         #user {
-            background-color: rgb(191, 191, 191);
+            background-color: rgb(238, 229, 229);
             padding: 5px;
+            font-family: 'Rubik', sans-serif;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 5px;
+            color: #333;
+            position: relative;
+            top: -5px;
         }
 
         .nav-links-wrapper {
@@ -261,11 +268,6 @@
             }
         }
 
-
-
-
-
-
         @media screen and (max-width: 768px) {
 
             .navbar-wrapper {
@@ -327,6 +329,7 @@
     </style>
 </head>
 
+
 <body>
     <div class="wrapper">
         <img src="./Picsart_23-06-14_16-44-35-935.png" alt="">
@@ -334,15 +337,22 @@
             <div class="logo">
                 <a href="#"><img src="./logo.png" alt="Trekkerz Logo"></a>
             </div>
+
             <div class="nav-links-wrapper">
                 <a href="#" class="nav-link">Discover</a>
-                <a href="#" class="nav-link">Community</a>
-                <a href="#" class="nav-link">Special Deals</a>
                 <a href="#" class="nav-link">About Us</a>
+                <a href="./discount.html" class="nav-link">Special Deals</a>
+                <a href="./cart.html" class="nav-link">Cart Items</a>
                 <a href="./signin.html" class="tkr-button" id="login-button">Sign In</a>
-                <a href="#" style="display: none;" id="logout">logout</a>
+                <a href="#" style="display: none;" id="logout">Logout</a>
                 <a href="./register.html" class="tkr-button" id="register-button">Register</a>
+
+
+
                 <a href="#" style="display: none;" id="user"> username</a>
+                <input type="file" id="picture-upload" style="display: none;">
+                <div id="picture-wrapper" style="display: none;"></div>
+                <a href="#" style="display: none;" id="remove-picture">Remove Picture</a>
             </div>
         </div>
 
@@ -400,15 +410,22 @@
     </div>
 </body>
 
-</html>
-<script>
-    let name_key = JSON.parse(localStorage.getItem("isActive")) || "";
-    let register = document.getElementById("register-button");
-    let active_user = document.getElementById("login-button");
 
+</html>
+
+<script>
+    let name_key = JSON.parse(localStorage.getItem("isActive")) ||null;
+    let register = document.getElementById("register-button");
+
+    let active_user = document.getElementById("login-button");
     let user = document.getElementById("user");
     let logout = document.getElementById("logout");
-    if (!name_key == "") {
+
+    let pictureUpload = document.getElementById("picture-upload");
+    let pictureWrapper = document.getElementById("picture-wrapper");
+    let removePicture = document.getElementById("remove-picture");
+
+    if (name_key !== null) {
         register.style.display = "none";
         user.style.display = "block";
         user.innerText = name_key;
@@ -420,8 +437,69 @@
 
     logout.addEventListener("click", function () {
         if (confirm("are you sure you want to logout")) {
-            localStorage.setItem("isActive", "");
+            localStorage.setItem("isActive",null);
+            user.style.display="none";
+            logout.style.display="none";
+            register.style.display="block";
+            active_user.style.display="block";
+            localStorage.removeItem("isActive");
+            localStorage.removeItem("picture");
+            user.style.display = "none";
+            
             window.location.reload();
         }
     });
+
+    function showPicture() {
+        user.style.display = "none";
+        pictureWrapper.style.display = "block";
+        removePicture.style.display = "block";
+
+        const savedPicture = localStorage.getItem("picture");
+
+        if (savedPicture) {
+            let img = document.createElement("img");
+            img.src = savedPicture;
+            img.style.maxWidth = "50px";
+            img.style.borderRadius = "20%";
+            pictureWrapper.appendChild(img);
+        }
+    }
+
+    function hidePicture() {
+        user.style.display = "block";
+        pictureWrapper.innerHTML = "";
+        pictureWrapper.style.display = "none";
+        removePicture.style.display = "none";
+    }
+
+    user.addEventListener("click", function () {
+        pictureUpload.click();
+    });
+
+    pictureUpload.addEventListener("change", function () {
+        let file = pictureUpload.files[0];
+        if (file) {
+            let reader = new FileReader();
+            reader.onload = function () {
+                localStorage.setItem("picture", reader.result);
+                showPicture();
+            }
+            reader.readAsDataURL(file);
+        }
+    });
+
+    removePicture.addEventListener("click", function () {
+        localStorage.removeItem("picture");
+        hidePicture();
+    });
+
+    if(name_key != null){
+        const savedPicture = localStorage.getItem("picture");
+        if (savedPicture) {
+            showPicture();
+        } else {
+            hidePicture();
+        }
+    }
 </script>

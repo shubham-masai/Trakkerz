@@ -101,7 +101,6 @@
 </head>
 
 <body>
-
     <h1>Registration Form</h1>
     <form id="registration-form">
         <label for="name">Name:</label>
@@ -119,7 +118,6 @@
 
 <script>
     let userData = JSON.parse(localStorage.getItem("username")) || [];
-    let name_key = JSON.parse(localStorage.getItem("isActive"))||"";
     let registrationForm = document.getElementById('registration-form');
 
     registrationForm.addEventListener('submit', (event) => {
@@ -130,16 +128,26 @@
         let password = event.target.elements.password.value;
 
         let isEmailExists = false;
+
+        let isNameExists = false;
         for (let i = 0; i < userData.length; i++) {
             if (userData[i].email === email) {
                 isEmailExists = true;
                 break;
             }
+            if(userData[i].name == name){
+                isNameExists= true;
+                break;
+            }
         }
-
         if (isEmailExists) {
             alert('Email address already exists. Please enter a different email address.');
-        } else {
+        }
+        else if(isNameExists){
+
+            alert("Username already exists. Please enter a different username.");
+        }
+        else {
             let isPasswordStrong = true;
             if (password.length < 8) {
                 isPasswordStrong = false;
@@ -162,13 +170,9 @@
                 userData.push(obj);
                 localStorage.setItem("username", JSON.stringify(userData));
                 alert('Registration successful!');
-               localStorage.setItem("isActive",JSON.stringify(obj.name));
-                window.location.href = "./index.html";
+                localStorage.setItem("isActive", JSON.stringify(obj.name));
+                window.location.href="./index.html";
             }
         }
     });
-
 </script>
-
- 
- 
