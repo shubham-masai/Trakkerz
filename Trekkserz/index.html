@@ -70,6 +70,11 @@
             text-decoration: none;
         }
 
+        .nav-links-wrapper a:hover {
+            transform: scale(1.05);
+            font-weight: bold;
+        }
+
         .heading {
             position: absolute;
             width: 80%;
@@ -110,7 +115,8 @@
         }
 
         #explore a:hover {
-            background-color: rgb(250, 228, 189);
+            background-color: rgb(240, 205, 144);
+            border: 1px solid brown;
         }
 
         footer {
@@ -413,8 +419,14 @@
 
 </html>
 
+<<<<<<< HEAD
 <script>
     let name_key = JSON.parse(localStorage.getItem("isActive")) ||null;
+=======
+<!-- i have just try to add commit and hide it -->
+<script>
+    let name_key = JSON.parse(localStorage.getItem("isActive")) || null;
+>>>>>>> 52264987e4485bc6985f4fa994991c654fd37bc3
     let register = document.getElementById("register-button");
 
     let active_user = document.getElementById("login-button");
@@ -437,6 +449,7 @@
 
     logout.addEventListener("click", function () {
         if (confirm("are you sure you want to logout")) {
+<<<<<<< HEAD
             localStorage.setItem("isActive",null);
             user.style.display="none";
             logout.style.display="none";
@@ -446,6 +459,17 @@
             localStorage.removeItem("picture");
             user.style.display = "none";
             
+=======
+            localStorage.setItem("isActive", null);
+            user.style.display = "none";
+            logout.style.display = "none";
+            register.style.display = "block";
+            active_user.style.display = "block";
+            localStorage.removeItem("isActive");
+            localStorage.removeItem("picture");
+            user.style.display = "none";
+
+>>>>>>> 52264987e4485bc6985f4fa994991c654fd37bc3
             window.location.reload();
         }
     });
@@ -494,7 +518,11 @@
         hidePicture();
     });
 
+<<<<<<< HEAD
     if(name_key != null){
+=======
+    if (name_key != null) {
+>>>>>>> 52264987e4485bc6985f4fa994991c654fd37bc3
         const savedPicture = localStorage.getItem("picture");
         if (savedPicture) {
             showPicture();

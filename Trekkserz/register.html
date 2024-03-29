@@ -117,6 +117,7 @@
 
 
 <script>
+    let emailKey= JSON.parse(localStorage.getItem("emailkey"))||null;
     let userData = JSON.parse(localStorage.getItem("username")) || [];
     let registrationForm = document.getElementById('registration-form');
 
@@ -170,9 +171,20 @@
                 userData.push(obj);
                 localStorage.setItem("username", JSON.stringify(userData));
                 alert('Registration successful!');
+<<<<<<< HEAD
                 localStorage.setItem("isActive", JSON.stringify(obj.name));
                 window.location.href="./index.html";
             }
         }
     });
 </script>
+=======
+                localStorage.setItem("isActive", JSON.stringify(name));
+                emailKey = email;
+                localStorage.setItem("emailkey", JSON.stringify(emailKey));
+                window.location.href="./otp.html";
+            }
+        }
+    });  
+</script>
+>>>>>>> 52264987e4485bc6985f4fa994991c654fd37bc3
